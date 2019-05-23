@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/mobileapi",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\MobileAPI\\Providers\\MobileAPIServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\MobileAPI\\": ""
+        }
+    }
+}
