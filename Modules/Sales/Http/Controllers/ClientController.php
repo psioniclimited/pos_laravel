@@ -17,16 +17,15 @@ class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
+     * @param ClientFilter $filter
      * @return Response
      */
     public function index(Request $request, ClientFilter $filter)
     {
-        $client = Client::with('contacts')
-            ->with('addresses')
-            ->filter($filter)
+        $client = Client::filter($filter)
             ->paginate($request->per_page);
         return response()->json($client);
-
     }
 
     /**

@@ -12,15 +12,17 @@ class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
+     * @param ProductFilter $filter
      * @return Response
      */
     public function index(Request $request, ProductFilter $filter)
     {
-        $categories = Product::filter($filter)
+        $products = Product::filter($filter)
             ->with('addons')
             ->with('options')
             ->paginate($request->per_page);
-        return response()->json($categories);
+        return response()->json($products);
     }
 
     /**
