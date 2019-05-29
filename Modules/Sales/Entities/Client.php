@@ -21,6 +21,10 @@ class Client extends Model
         return $this->hasMany('Modules\Sales\Entities\Contact');
     }
 
+    public function orders(){
+        return $this->hasMany('Modules\Sales\Entities\Order');
+    }
+
     public function scopeFilter($query, ClientFilter $filters)
     {
         return $filters->apply($query);

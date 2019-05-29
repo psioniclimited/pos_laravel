@@ -16,4 +16,9 @@ Route::group(['middleware' => 'api', 'prefix' => '', 'namespace' => 'Modules\Sal
 
     //address controller
     Route::get('/address','AddressController@index')->middleware(['jwt.auth', 'set.tenant']);
+
+    // Order Controller
+    Route::get('/order','OrderController@index')->middleware(['jwt.auth', 'set.tenant']);
+    Route::get('/order/{id}','OrderController@show')->middleware(['jwt.auth', 'set.tenant']);
+
 });

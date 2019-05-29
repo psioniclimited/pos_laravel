@@ -14,4 +14,14 @@ class OrderDetail extends Model
     {
         return $this->belongsTo('Modules\Sales\Entities\Order');
     }
+
+    public function product()
+    {
+        return $this->belongsTo('Modules\Sales\Entities\Product');
+    }
+
+    public function option()
+    {
+        return $this->belongsTo('Modules\Sales\Entities\Option');
+    }
 }

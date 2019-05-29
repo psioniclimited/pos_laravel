@@ -14,4 +14,8 @@ class Option extends Model
     {
         return $this->belongsTo('Modules\Sales\Entities\Product');
     }
+
+    public function order_details() {
+        return $this->hasMany('Modules\Sales\Entities\OrderDetail');
+    }
 }

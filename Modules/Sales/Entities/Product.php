@@ -28,6 +28,10 @@ class Product extends Model
         return $this->hasMany('Modules\Sales\Entities\Option');
     }
 
+    public function order_details() {
+        return $this->hasMany('Modules\Sales\Entities\OrderDetail');
+    }
+
     public function scopeFilter($query, ProductFilter $filters)
     {
         return $filters->apply($query);
