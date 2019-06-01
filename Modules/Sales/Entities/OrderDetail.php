@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     use BelongsToTenants;
-    protected $fillable = [];
+    protected $fillable = ['quantity','product_id','option_id','order_id','company_id'];
 
     public function order()
     {

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use BelongsToTenants;
+    protected $fillable = ['user_id', 'client_id', 'total', 'discount', 'date'];
 
     public function order_details() {
         return $this->hasMany('Modules\Sales\Entities\OrderDetail');
