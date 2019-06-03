@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Sales\Entities\Order;
 use Modules\Sales\Entities\OrderDetail;
 use JWTAuth;
+use Carbon\Carbon;
 
 class MobileOrderController extends Controller
 {
@@ -43,7 +44,7 @@ class MobileOrderController extends Controller
         $collections = json_decode($request->data);
         foreach ($collections as $order) {
             $newOrder = new Order([
-                'date' => $order->date,
+                'date' => (new Carbon($order->date))->toDateString(),
                 'user_id' => $user->id,
                 'total' => $order->total,
                 'discount' => $order->discount,
@@ -57,7 +58,8 @@ class MobileOrderController extends Controller
                     'product_id'=> $orderDetail->productId,
                     'option_id' => $orderDetail->optionId,
                     'order_id' => $newOrder->id,
-                    'company_id'=> $user->company_id
+                    'company_id'=> $user->company_id,
+                    'total'=> $orderDetail->total
 //                    if( $orderDetail->optionId != null){
 //
 //                    }
