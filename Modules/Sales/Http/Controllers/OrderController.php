@@ -19,6 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request, OrderFilter $filter)
     {
+//        this.order.total - (this.order.total * this.order.discount) / 100;
         $order = Order::filter($filter)
             ->join('clients', 'clients.id', '=', 'orders.client_id')
             ->select(
@@ -27,7 +28,7 @@ class OrderController extends Controller
                 'clients.name',
                 'orders.total',
                 'orders.discount',
-                DB::raw('(orders.total - orders.discount) as grand_total')
+                DB::raw('(orders.total - (orders.total * orders.discount)/100) as grand_total')
             )
             ->paginate($request->per_page);
         return response()->json($order);

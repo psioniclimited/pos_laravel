@@ -37,42 +37,33 @@ class MobileOrderController extends Controller
      */
     public function store(Request $request)
     {
-//        dd('asdasdsd');
-//        dd($request->data);
-
         $user = JWTAuth::parseToken()->authenticate();
         $collections = json_decode($request->data);
+//        return response()->json($collections);
+//        $collections = $request->data;
         foreach ($collections as $order) {
-            $newOrder = new Order([
+            $newOrder = Order::create([
                 'date' => (new Carbon($order->date))->toDateString(),
                 'user_id' => $user->id,
                 'total' => $order->total,
                 'discount' => $order->discount,
                 'client_id' => $order->clientId,
-                'company_id'=> $user->company_id
             ]);
-            $newOrder->save();
             foreach ($order->orderDetails as $orderDetail) {
-                $newOrderDetail = new OrderDetail([
+                $newOrder->order_details()->create([
                     'quantity'=> $orderDetail->quantity,
                     'product_id'=> $orderDetail->productId,
                     'option_id' => $orderDetail->optionId,
-                    'order_id' => $newOrder->id,
-                    'company_id'=> $user->company_id,
                     'total'=> $orderDetail->total
-//                    if( $orderDetail->optionId != null){
-//
-//                    }
                 ]);
-                $newOrderDetail->save();
-
             }
         }
-
         return response()->json([
-            'working'
+            'create' =>
+                [
+                    'message' => sprintf('Order Synced Successfully')
+                ]
         ]);
-
     }
 
     /**
