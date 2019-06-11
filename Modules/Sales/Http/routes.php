@@ -21,4 +21,7 @@ Route::group(['middleware' => 'api', 'prefix' => '', 'namespace' => 'Modules\Sal
     Route::get('/order','OrderController@index')->middleware(['jwt.auth', 'set.tenant']);
     Route::get('/order/{id}','OrderController@show')->middleware(['jwt.auth', 'set.tenant']);
 
+    // Total Sales Controller
+    Route::get('/total_paid', 'TotalSalesController@total_paid')->middleware(['jwt.auth', 'set.tenant']);
+
 });

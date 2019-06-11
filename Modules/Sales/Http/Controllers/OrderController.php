@@ -20,14 +20,14 @@ class OrderController extends Controller
     public function index(Request $request, OrderFilter $filter)
     {
         $order = Order::filter($filter)
-            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->join('clients', 'clients.id', 'orders.client_id')
             ->select(
                 'orders.id',
                 'orders.date',
                 'clients.name',
                 'orders.total',
                 'orders.discount',
-                DB::raw('(orders.total - orders.discount) as grand_total')
+                DB::raw('(orders.total - (orders.total * orders.discount)/100) as grand_total')
             )
             ->paginate($request->per_page);
         return response()->json($order);
