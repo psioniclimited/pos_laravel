@@ -19,6 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request, OrderFilter $filter)
     {
+//        this.order.total - (this.order.total * this.order.discount) / 100;
         $order = Order::filter($filter)
             ->join('clients', 'clients.id', 'orders.client_id')
             ->select(
