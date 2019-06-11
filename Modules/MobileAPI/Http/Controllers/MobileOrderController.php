@@ -54,7 +54,7 @@ class MobileOrderController extends Controller
                     'quantity'=> $orderDetail->quantity,
                     'product_id'=> $orderDetail->productId,
                     'option_id' => $orderDetail->optionId,
-                    'total'=> $orderDetail->total
+                    'total'=> $orderDetail->total * $orderDetail->quantity
                 ]);
             }
         }
