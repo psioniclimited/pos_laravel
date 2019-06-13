@@ -2,6 +2,7 @@
 
 namespace Modules\Sales\Entities;
 
+use App\Filters\OrderDetailFilter;
 use HipsterJazzbo\Landlord\BelongsToTenants;
 use Illuminate\Database\Eloquent\Model;
 
