@@ -22,19 +22,44 @@ class ProductSalesReportController extends Controller
      */
     public function index(Request $request, ProductFilter $filter)
     {
-        $sales_report = Product::filter($filter)
-            ->leftJoin('options', 'products.id', 'options.product_id')
-            ->leftJoin('order_details', 'order_details.product_id', 'products.id')
-            ->select(
-                'products.id',
-                'products.name',
-                'options.type',
-                DB::raw('SUM(order_details.quantity) as quantity'),
-                DB::raw('SUM(order_details.total) as total')
-            )
-            ->groupBy('options.id')
-            ->paginate($request->per_page);
+        $query = "SELECT 
+                  options.id,
+                  products.name, 
+                  options.type, 
+                  SUM(quantity) as quantity, 
+                  SUM(order_details.total) as total, 
+                  (CASE WHEN products.has_options = 1 THEN options.price ELSE products.sale_price END) AS sale_price 
+                  from options
+                  JOIN order_details ON order_details.option_id = options.id
+                  JOIN products ON products.id = options.product_id
+                  GROUP BY options.id
+                  UNION
+                  SELECT 
+                  products.id, 
+                  products.name, '' as type, 
+                  SUM(quantity) as quantity, 
+                  SUM(order_details.total) as total,  
+                  products.sale_price AS sale_price from products
+                  JOIN order_details ON order_details.product_id = products.id
+                  WHERE products.has_options = 0
+                  GROUP BY products.id";
+        $sales_report = DB::select($query);
         return response()->json($sales_report);
+
+        //        $sales_report = Product::filter($filter)
+//            ->leftJoin('options', 'products.id', 'options.product_id')
+//            ->leftJoin('order_details', 'order_details.product_id', 'products.id')
+//            ->select(
+//                'products.id',
+//                'products.name',
+//                'options.type',
+////                DB::raw('SUM(order_details.quantity) as quantity'),
+//                DB::raw('(CASE WHEN order_details.option_id = options.id AND order_details.product_id = products.id THEN SUM(order_details.quantity) ELSE products.sale_price END) AS quantity'),
+//                DB::raw('SUM(order_details.total) as total'),
+//                DB::raw('(CASE WHEN products.has_options = 1 THEN options.price ELSE products.sale_price END) AS sale_price')
+//            )
+//            ->groupBy('options.id', 'products.id')
+//            ->paginate($request->per_page);
     }
 
     /**
