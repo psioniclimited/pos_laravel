@@ -43,7 +43,7 @@ class MobileOrderController extends Controller
 //        $collections = $request->data;
         foreach ($collections as $order) {
             $newOrder = Order::create([
-                'date' => (new Carbon($order->date))->toDateString(),
+                'date' => $order->date,
                 'user_id' => $user->id,
                 'total' => $order->total,
                 'discount' => $order->discount,

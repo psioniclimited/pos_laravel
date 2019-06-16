@@ -26,6 +26,7 @@ class MobileLoginController extends Controller
 
         try {
             Config::set('jwt.ttl', 365 * 24 * 60);
+//            Config::set('jwt.ttl', 1);
             // attempt to verify the credentials and create a token for the user
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Invalid Credentials'], 401);

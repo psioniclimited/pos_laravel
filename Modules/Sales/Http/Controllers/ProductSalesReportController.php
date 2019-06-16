@@ -22,6 +22,8 @@ class ProductSalesReportController extends Controller
      */
     public function index(Request $request, ProductFilter $filter)
     {
+//        dd($filter);
+//        return response()->json($request->all());
         $query = "SELECT 
                   options.id,
                   products.name, 
@@ -36,10 +38,12 @@ class ProductSalesReportController extends Controller
                   UNION
                   SELECT 
                   products.id, 
-                  products.name, '' as type, 
+                  products.name,
+                  '' as type, 
                   SUM(quantity) as quantity, 
                   SUM(order_details.total) as total,  
-                  products.sale_price AS sale_price from products
+                  products.sale_price AS sale_price 
+                  from products
                   JOIN order_details ON order_details.product_id = products.id
                   WHERE products.has_options = 0
                   GROUP BY products.id";
