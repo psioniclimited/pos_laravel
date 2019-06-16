@@ -60,17 +60,21 @@ class ProductSalesReportController extends Controller
                 $productWithOptionsQuery = $productWithOptionsQuery . " WHERE orders.date BETWEEN '$dateArray[0]' AND '$dateArray[0] 23:59:59'";
                 $productWithoutOptionsQuery = $productWithoutOptionsQuery . " AND orders.date BETWEEN '$dateArray[0]' AND '$dateArray[0] 23:59:59'";
             }
-//            if($request->global){
-//
-//            }
+            if ($request->global) {
+                $productWithOptionsQuery = $productWithOptionsQuery . " AND products.name LIKE '%" . $request->global . "%'";
+                $productWithoutOptionsQuery = $productWithoutOptionsQuery . " AND products.name LIKE '%" . $request->global . "%'";
+            }
+        } else {
+            if ($request->global) {
+                $productWithOptionsQuery = $productWithOptionsQuery . " WHERE products.name LIKE '%" . $request->global . "%'";
+                $productWithoutOptionsQuery = $productWithoutOptionsQuery . " AND products.name LIKE '%" . $request->global . "%'";
+            }
         }
-
-
 
         $productWithOptionsQuery = $productWithOptionsQuery . " GROUP BY options.id";
 //        GROUP BY products.id
         $productWithoutOptionsQuery = $productWithoutOptionsQuery . " GROUP BY products.id";
-        $query = $productWithOptionsQuery . " UNION "  . $productWithoutOptionsQuery;
+        $query = $productWithOptionsQuery . " UNION " . $productWithoutOptionsQuery;
 //        $query = "SELECT
 //                  options.id,
 //                  products.name,
