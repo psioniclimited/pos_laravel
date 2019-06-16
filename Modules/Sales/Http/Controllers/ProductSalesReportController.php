@@ -49,7 +49,6 @@ class ProductSalesReportController extends Controller
                   WHERE products.has_options = 0";
 
         if ($request->date) {
-
             $dateArray = explode(',', $request->date);
             $dateArray[0] = Carbon::createFromFormat('D M d Y H:i:s e+', $dateArray[0])->format('Y-m-d');
             if (sizeof($dateArray) > 1 && !empty($dateArray[1])) {
@@ -61,7 +60,12 @@ class ProductSalesReportController extends Controller
                 $productWithOptionsQuery = $productWithOptionsQuery . " WHERE orders.date BETWEEN '$dateArray[0]' AND '$dateArray[0] 23:59:59'";
                 $productWithoutOptionsQuery = $productWithoutOptionsQuery . " AND orders.date BETWEEN '$dateArray[0]' AND '$dateArray[0] 23:59:59'";
             }
+//            if($request->global){
+//
+//            }
         }
+
+
 
         $productWithOptionsQuery = $productWithOptionsQuery . " GROUP BY options.id";
 //        GROUP BY products.id

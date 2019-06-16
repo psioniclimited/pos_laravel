@@ -26,5 +26,8 @@ Route::group(['middleware' => 'api', 'prefix' => '', 'namespace' => 'Modules\Sal
 
     // Total Sales Controller
     Route::get('/total_paid', 'TotalSalesController@total_paid')->middleware(['jwt.auth', 'set.tenant']);
-
+    // Total sales discount
+    Route::get('/total_discount', 'TotalSalesController@total_discount')->middleware(['jwt.auth', 'set.tenant']);
+    // grand total
+    Route::get('/grand_total', 'TotalSalesController@grand_total')->middleware(['jwt.auth', 'set.tenant']);
 });

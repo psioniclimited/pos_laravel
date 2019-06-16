@@ -32,11 +32,11 @@ class OrderFilter extends Filters
         if (sizeof($dateArray) > 1 && !empty($dateArray[1])) {
             $dateArray[1] = Carbon::createFromFormat('D M d Y H:i:s e+', $dateArray[1])->format('Y-m-d');
             return $this->builder
-                ->whereDate('date', '>=', $dateArray[0])
-                ->whereDate('date', '<=', $dateArray[1]);
+                ->whereDate('orders.date', '>=', $dateArray[0])
+                ->whereDate('orders.date', '<=', $dateArray[1]);
         } else {
             return $this->builder
-                ->whereDate('date', '=', $dateArray[0]);
+                ->whereDate('orders.date', '=', $dateArray[0]);
         }
     }
 

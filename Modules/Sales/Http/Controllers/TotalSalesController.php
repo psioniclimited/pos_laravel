@@ -16,4 +16,20 @@ class TotalSalesController extends Controller
             ->get();
         return response()->json($sum);
     }
+
+    function total_discount(OrderFilter $filter){
+        $sum = Order::filter($filter)
+            ->join('clients', 'clients.id', 'orders.client_id')
+            ->selectRaw('sum((orders.total * orders.discount)/100) as total')
+            ->get();
+        return response()->json($sum);
+    }
+
+    function grand_total(OrderFilter $filter){
+        $sum = Order::filter($filter)
+            ->join('clients', 'clients.id', 'orders.client_id')
+            ->selectRaw('sum(orders.total) as total')
+            ->get();
+        return response()->json($sum);
+    }
 }
