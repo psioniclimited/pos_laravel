@@ -75,29 +75,6 @@ class ProductSalesReportController extends Controller
 //        GROUP BY products.id
         $productWithoutOptionsQuery = $productWithoutOptionsQuery . " GROUP BY products.id";
         $query = $productWithOptionsQuery . " UNION " . $productWithoutOptionsQuery;
-//        $query = "SELECT
-//                  options.id,
-//                  products.name,
-//                  options.type,
-//                  SUM(quantity) as quantity,
-//                  SUM(order_details.total) as total,
-//                  (CASE WHEN products.has_options = 1 THEN options.price ELSE products.sale_price END) AS sale_price
-//                  from options
-//                  JOIN order_details ON order_details.option_id = options.id
-//                  JOIN products ON products.id = options.product_id
-//                  GROUP BY options.id
-//                  UNION
-//                  SELECT
-//                  products.id,
-//                  products.name,
-//                  '' as type,
-//                  SUM(quantity) as quantity,
-//                  SUM(order_details.total) as total,
-//                  products.sale_price AS sale_price
-//                  from products
-//                  JOIN order_details ON order_details.product_id = products.id
-//                  WHERE products.has_options = 0
-//                  GROUP BY products.id";
         $sales_report = DB::select($query);
         return response()->json($sales_report);
     }

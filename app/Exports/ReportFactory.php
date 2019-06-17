@@ -24,7 +24,7 @@ class ReportFactory
 
     public function getReport(Request $request)
     {
-        dd('here');
+//        dd('here');
         $report_name = $this->getReportExport($request);
         $this->extension = $request->report_type;
         switch ($request->report_type) {
@@ -89,6 +89,9 @@ class ReportFactory
                 break;
             case 'orders':
                 return new OrderReportExport($request);
+                break;
+            case 'product_sales':
+                return new ProductSalesReportExport($request);
                 break;
             default:
                 return 'test';

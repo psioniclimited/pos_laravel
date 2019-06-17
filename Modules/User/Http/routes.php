@@ -33,7 +33,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user', 'namespace' => 'Modules
 });
 
 Route::group(['middleware' => 'api', 'prefix' => '', 'namespace' => 'Modules\User\Http\Controllers'], function () {
-    Route::get('report/download', 'ReportController@index')->middleware(['set.tenant', 'jwt.auth', 'permission:report.index']); // add token in frontend
+    Route::get('report/download', 'ReportController@index')->middleware(['set.tenant', 'jwt.auth']); // add token in frontend
 
     //SignUp
     Route::post('/signup', 'SignUpController@store');
