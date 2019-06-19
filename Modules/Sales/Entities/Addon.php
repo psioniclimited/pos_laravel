@@ -14,4 +14,9 @@ class Addon extends Model
     {
         return $this->belongsTo('Modules\Sales\Entities\Product');
     }
+
+    public function orderDetail()
+    {
+        return $this->belongsToMany('Modules\Sales\Entities\OrderDetail');
+    }
 }

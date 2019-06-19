@@ -50,12 +50,17 @@ class MobileOrderController extends Controller
                 'client_id' => $order->clientId,
             ]);
             foreach ($order->orderDetails as $orderDetail) {
-                $newOrder->order_details()->create([
-                    'quantity'=> $orderDetail->quantity,
-                    'product_id'=> $orderDetail->productId,
+                $order_detail = $newOrder->order_details()->create([
+                    'quantity' => $orderDetail->quantity,
+                    'product_id' => $orderDetail->productId,
                     'option_id' => $orderDetail->optionId,
-                    'total'=> $orderDetail->total * $orderDetail->quantity
+                    'total' => $orderDetail->total * $orderDetail->quantity
                 ]);
+
+                foreach ($orderDetail->addon as $addon) {
+                    $order_detail->addon()->attach($addon);
+                }
+
             }
         }
         return response()->json([

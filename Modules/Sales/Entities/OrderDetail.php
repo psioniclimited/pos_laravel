@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     use BelongsToTenants;
-    protected $fillable = ['quantity','product_id','option_id','order_id','company_id','total'];
+    protected $fillable = ['quantity', 'product_id', 'option_id', 'order_id', 'company_id', 'total'];
 
     public function order()
     {
@@ -24,5 +24,10 @@ class OrderDetail extends Model
     public function option()
     {
         return $this->belongsTo('Modules\Sales\Entities\Option');
+    }
+
+    public function addon()
+    {
+        return $this->belongsToMany('Modules\Sales\Entities\Addon');
     }
 }
