@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Sales\Entities\Order;
 use DB;
+use Modules\Sales\Entities\OrderDetail;
 
 class OrderController extends Controller
 {
@@ -59,13 +60,43 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with('order_details')
-            ->with('order_details.product')
-            ->with('order_details.option')
-            ->with('client')
-            ->where('id', $id)
-            ->first();
-        return response()->json($order);
+//        $order = Order::with('order_details')
+//            ->with('order_details.product')
+//            ->with('order_details.option')
+//            ->with('client')
+//            ->where('id', $id)
+//            ->first();
+//        return response()->json($id);
+
+//        $orderDetails = OrderDetail::with('addon')
+//            ->with('product')
+//            ->with('option')
+//            ->with('order.client')
+//            ->where('order_id', '=', $id)->get();
+
+        $orderDetails = OrderDetail::leftJoin('addon_order_detail','addon_order_detail.order_detail_id','order_details.id')
+            ->leftJoin('addons','addons.id','addon_order_detail.addon_id')
+            ->leftJoin('options','options.id','order_details.option_id')
+            ->Join('products','products.id','order_details.product_id')
+            ->groupBy(
+                'addons.id',
+                'products.id'
+                )
+            ->where('order_details.order_id', $id)
+            ->select(
+                'addons.name AS addon_name',
+                'addons.price AS addon_price',
+                'products.name AS product_name',
+                'products.sale_price AS product_price',
+                'options.type AS option_type',
+                'options.price AS option_price',
+                'order_details.quantity'
+                )
+            ->get();
+
+//        array_push($orderDetails, $order);
+
+        return response()->json($orderDetails);
     }
 
     /**
