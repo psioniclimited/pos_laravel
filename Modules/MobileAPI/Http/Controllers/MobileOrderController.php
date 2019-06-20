@@ -58,7 +58,7 @@ class MobileOrderController extends Controller
                 ]);
 
                 foreach ($orderDetail->addon as $addon) {
-                    $order_detail->addon()->attach($addon);
+                    $order_detail->addons()->attach($addon);
                 }
 
             }
