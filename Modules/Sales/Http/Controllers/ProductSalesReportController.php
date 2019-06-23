@@ -30,11 +30,14 @@ class ProductSalesReportController extends Controller
                   options.type, 
                   SUM(quantity) as quantity, 
                   SUM(order_details.total) as total, 
-                  (CASE WHEN products.has_options = 1 THEN options.price ELSE products.sale_price END) AS sale_price 
+                  (CASE WHEN products.has_options = 1 THEN options.price ELSE products.sale_price END) AS sale_price,
+                  GROUP_CONCAT(DISTINCT addons.name ORDER BY addons.id DESC SEPARATOR ', ') AS addons 
                   FROM options
                   JOIN order_details ON order_details.option_id = options.id
                   JOIN orders on order_details.order_id = orders.id
-                  JOIN products ON products.id = options.product_id";
+                  JOIN products ON products.id = options.product_id
+                  LEFT JOIN addon_order_detail ON addon_order_detail.order_detail_id = order_details.id
+                  LEFT JOIN addons ON addons.id=addon_order_detail.addon_id";
 
         $productWithoutOptionsQuery = "SELECT 
                   products.id, 
@@ -42,7 +45,8 @@ class ProductSalesReportController extends Controller
                   '' as type, 
                   SUM(quantity) as quantity, 
                   SUM(order_details.total) as total,  
-                  products.sale_price AS sale_price 
+                  products.sale_price AS sale_price,
+                  '' as addons
                   FROM products
                   JOIN order_details ON order_details.product_id = products.id
                   JOIN orders on order_details.order_id = orders.id
@@ -75,6 +79,7 @@ class ProductSalesReportController extends Controller
 //        GROUP BY products.id
         $productWithoutOptionsQuery = $productWithoutOptionsQuery . " GROUP BY products.id";
         $query = $productWithOptionsQuery . " UNION " . $productWithoutOptionsQuery;
+//        $sales_report = DB::select($query);
         $sales_report = DB::select($query);
         return response()->json($sales_report);
     }
